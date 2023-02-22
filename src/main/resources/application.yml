@@ -1,1 +1,43 @@
+spring:
+  devtools:
+    restart:
+      enabled: false
+#  config:
+#    activate:
+#      on-profile:
+#        - prod
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password: sa
+    hikari:
+      auto-commit: true
+      minimum-idle: 10
+      maximum-pool-size: 50
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show-sql: true
+        format_sql: true
+        open-in-view: false
+    hibernate:
+      ddl-auto: create
 
+
+logging:
+#  file:
+#    name: ${LINK_HOME != null ? LINK_HOME:.}/logs/${spring.application.name}.log
+  pattern:
+    file: "[%d{yyyy-MM-dd HH:mm:ss}]-[%-5level]-[%class:%line]-[%method]-[%message]%n"
+    console: "[%d{yyyy-MM-dd HH:mm:ss}]-[%highlight(%-5level)]-[%class:%line]-[%method]-[%message]%n"
+#  logback:
+#    rollingpolicy:
+#      max-history: 30
+#      max-file-size: 100MB
+  #      file-name-pattern: ${LOG_FILE}-%d{yyyy-MM-dd}.%i.log #default value
+  level:
+    root: info
+    org.hibernate: debug
+    org.hibernate.type: trace
