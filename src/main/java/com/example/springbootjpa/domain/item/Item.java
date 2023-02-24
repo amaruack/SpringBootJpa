@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
+@Data
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor

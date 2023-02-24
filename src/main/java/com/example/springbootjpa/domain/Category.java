@@ -3,9 +3,10 @@ package com.example.springbootjpa.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,13 +23,13 @@ public class Category {
     String name;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<CategoryItemMapping> categoryItemMappings;
+    List<CategoryItemMapping> categoryItemMappings = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     Category parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    List<Category> child;
+    List<Category> child= new ArrayList<>();
 
 }

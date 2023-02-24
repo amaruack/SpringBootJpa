@@ -5,9 +5,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,11 +31,27 @@ public class Order {
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id", referencedColumnName = "delivery_id")
     Delivery delivery;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<OrderItem> orderItems = new ArrayList<>();
+
+    /*==== 연관관계 편의 메서드  =====*/
+    public void setMember(Member member) {
+        this.member = member;
+        member.orders.add(this);
+    }
+
+    public void addOrderItems(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
 
 }

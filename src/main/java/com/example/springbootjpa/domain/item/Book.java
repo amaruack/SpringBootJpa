@@ -2,13 +2,13 @@ package com.example.springbootjpa.domain.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 
-@Getter
+@Data
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor

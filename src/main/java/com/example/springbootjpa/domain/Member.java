@@ -5,9 +5,10 @@ import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +28,7 @@ public class Member {
     private Address address;
 
     @BatchSize(size = 100)
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    List<Order> orders;
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Order> orders = new ArrayList<>();
 
 }
