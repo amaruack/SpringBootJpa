@@ -36,7 +36,7 @@ public class Order {
     Delivery delivery;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<OrderItem> orderItems = new ArrayList<>();
+    List<OrderItem> orderItems ;
 
     /*==== 연관관계 편의 메서드  =====*/
     public void setMember(Member member) {

@@ -1,0 +1,26 @@
+#spring:
+#  devtools:
+#    restart:
+#      enabled: false
+##  config:
+##    activate:
+##      on-profile:
+##        - prod
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:test
+#    username: sa
+#    password:
+#    hikari:
+#      auto-commit: true
+#      minimum-idle: 10
+#      maximum-pool-size: 50
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.H2Dialect
+#        show-sql: true
+#        format_sql: true
+#        open-in-view: false
+#    hibernate:
+#      ddl-auto: create
