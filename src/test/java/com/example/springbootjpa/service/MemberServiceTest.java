@@ -33,7 +33,6 @@ class MemberServiceTest {
         assertEquals(save.getId(), findMember.getId());
         assertEquals(save.getName(), findMember.getName());
 
-
     }
 
     @Test()

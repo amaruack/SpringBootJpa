@@ -24,11 +24,8 @@ public class MemberRepository /*extends CrudRepository<Member, Long>*/ {
         return member;
     }
 
-    public Member find(Long id) {
-//        try {
-            return em.find(Member.class, id);
-//        } catch (NotFou)
-
+    public Member findById(Long id) {
+        return em.find(Member.class, id);
     }
 
     public List<Member> search(MemberQueryParam queryParam) {

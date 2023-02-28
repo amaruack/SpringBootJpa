@@ -1,6 +1,8 @@
 package com.example.springbootjpa.domain;
 
+import com.example.springbootjpa.config.DeliveryStatus;
 import com.example.springbootjpa.config.OrderStatus;
+import com.example.springbootjpa.dto.OrderResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -52,6 +54,39 @@ public class Order {
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);
+    }
+
+    // 생성 로직
+    public static Order createOrder(Member member, Delivery delivery, List<OrderItem> orderItems) {
+        Order order = Order.builder()
+                .member(member)
+                .delivery(delivery)
+                .orderDate(LocalDateTime.now())
+                .orderStatus(OrderStatus.ORDER)
+                .build();
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItems(orderItem);
+        }
+        return order;
+    }
+
+    public void cancel(){
+        if (delivery.getStatus() == DeliveryStatus.COMPLETE){
+            throw new IllegalStateException("이미 배송 완료");
+        }
+        this.setOrderStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+        }
+    }
+
+    //전체 주문가격 조회
+    public int getTotalPrice(){
+        return orderItems.stream().mapToInt(orderItem -> orderItem.getTotalPrice()).sum();
+    }
+
+    public OrderResponse toResponse(){
+        return OrderResponse.builder().build();
     }
 
 }

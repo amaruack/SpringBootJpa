@@ -1,7 +1,9 @@
 package com.example.springbootjpa.domain.item;
 
 import com.example.springbootjpa.domain.CategoryItemMapping;
-import com.example.springbootjpa.domain.OrderItem;
+import com.example.springbootjpa.dto.ItemResponse;
+import com.example.springbootjpa.dto.MemberResponse;
+import com.example.springbootjpa.exception.NotEnoughStockException;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -39,5 +41,29 @@ public class Item {
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<CategoryItemMapping> categoryItemMappings;
+
+    public Integer addStock(int stockQuantity) {
+        return this.stockQuantity += stockQuantity;
+    }
+
+    public Integer removeStock(int stockQuantity) {
+
+        int rest = this.stockQuantity - stockQuantity;
+        if (rest < 0) {
+            throw new NotEnoughStockException("stock is small");
+        }
+        this.stockQuantity = rest;
+        return rest;
+
+    }
+
+    public ItemResponse toResponse() {
+        return ItemResponse.builder()
+                .id(this.id)
+                .name(this.name)
+                .price(this.price)
+                .stockQuantity(this.stockQuantity)
+                .build();
+    }
 
 }
