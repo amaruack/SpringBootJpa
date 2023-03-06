@@ -39,7 +39,7 @@ class MemberRepositoryTest {
         Member save = memberRepository.save(member);
 
         //then
-        Member findMember = memberRepository.find(save.getId());
+        Member findMember = memberRepository.findById(save.getId());
 
         assertEquals(save.getId(), findMember.getId());
         assertEquals(save.getName(), findMember.getName());
@@ -56,7 +56,7 @@ class MemberRepositoryTest {
         Member save = memberRepository.save(member);
 
         //when
-        Member findMember = memberRepository.find(save.getId());
+        Member findMember = memberRepository.findById(save.getId());
 
         //then
         assertEquals(save.getId(), findMember.getId());

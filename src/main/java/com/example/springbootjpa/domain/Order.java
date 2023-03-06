@@ -47,6 +47,9 @@ public class Order {
     }
 
     public void addOrderItems(OrderItem orderItem) {
+        if (this.orderItems == null) {
+            this.orderItems = new ArrayList<>();
+        }
         this.orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
@@ -86,7 +89,11 @@ public class Order {
     }
 
     public OrderResponse toResponse(){
-        return OrderResponse.builder().build();
+        return OrderResponse.builder()
+                .orderId(this.id)
+                .orderDate(this.orderDate)
+                .orderStatus(this.orderStatus)
+                .build();
     }
 
 }

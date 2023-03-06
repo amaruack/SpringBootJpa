@@ -1,11 +1,13 @@
 package com.example.springbootjpa.domain.valuetype;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Data
+@Builder
 @Embeddable
 public class Address {
 
