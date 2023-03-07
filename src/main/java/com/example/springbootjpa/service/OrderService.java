@@ -37,14 +37,17 @@ public class OrderService {
                 .address(member.getAddress())
                 .build();
 
+        // 아이템 조회
+        Item item = itemRepository.findById(createRequest.getItemId());
+        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), createRequest.getCount());
         // order item 생성
-        List<OrderItem> orderItems = createRequest.getOrderItems().stream().map(orderItemCreateRequest -> {
-            Item item = itemRepository.findById(orderItemCreateRequest.getItemId());
-            return OrderItem.createOrderItem(item, orderItemCreateRequest.getOrderPrice(), orderItemCreateRequest.getCount());
-        }).collect(Collectors.toList());
+//        List<OrderItem> orderItems = createRequest.getOrderItems().stream().map(orderItemCreateRequest -> {
+//
+//            return OrderItem.createOrderItem(item, orderItemCreateRequest.getOrderPrice(), orderItemCreateRequest.getCount());
+//        }).collect(Collectors.toList());
 
         // 주문 생성
-        Order entity = Order.createOrder(member, delivery, orderItems);
+        Order entity = Order.createOrder(member, delivery, orderItem);
 
         // 주문 저장
         Order saveEntity = repository.save(entity);

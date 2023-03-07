@@ -11,12 +11,12 @@
         <div>
             <form th:object="${orderSearch}" class="form-inline">
                 <div class="form-group mb-2">
-                    <input type="text" th:field="*{memberName}" class="form-control" placeholder="회원명"/>
+                    <input type="text" th:field="*{userName}" class="form-control" placeholder="회원명"/>
                 </div>
                 <div class="form-group mx-sm-1 mb-2">
                     <select th:field="*{orderStatus}" class="form-control">
                         <option value="">주문상태</option>
-                        <option th:each="status : ${T(jpabook.jpashop.domain.OrderStatus).values()}"
+                        <option th:each="status : ${T(com.example.springbootjpa.config.OrderStatus).values()}"
                                 th:value="${status}"
                                 th:text="${status}">option
                         </option>
@@ -41,15 +41,15 @@
             </thead>
             <tbody>
             <tr th:each="item : ${orders}">
-                <td th:text="${item.id}"></td>
+                <td th:text="${item.orderId}"></td>
                 <td th:text="${item.member.name}"></td>
                 <td th:text="${item.orderItems[0].item.name}"></td>
                 <td th:text="${item.orderItems[0].orderPrice}"></td>
                 <td th:text="${item.orderItems[0].count}"></td>
-                <td th:text="${item.status}"></td>
+                <td th:text="${item.orderStatus}"></td>
                 <td th:text="${item.orderDate}"></td>
                 <td>
-                    <a th:if="${item.status.name() == 'ORDER'}" href="#" th:href="'javascript:cancel('+${item.id}+')'"
+                    <a th:if="${item.orderStatus.name() == 'ORDER'}" href="#" th:href="'javascript:cancel('+${item.orderId}+')'"
                        class="btn btn-danger">CANCEL</a>
                 </td>
             </tr>

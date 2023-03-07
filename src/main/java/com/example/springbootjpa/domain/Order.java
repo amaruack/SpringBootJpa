@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -73,6 +74,17 @@ public class Order {
         return order;
     }
 
+    public static Order createOrder(Member member, Delivery delivery, OrderItem orderItem) {
+        Order order = Order.builder()
+                .member(member)
+                .delivery(delivery)
+                .orderDate(LocalDateTime.now())
+                .orderStatus(OrderStatus.ORDER)
+                .build();
+        order.addOrderItems(orderItem);
+        return order;
+    }
+
     public void cancel(){
         if (delivery.getStatus() == DeliveryStatus.COMPLETE){
             throw new IllegalStateException("이미 배송 완료");
@@ -93,6 +105,8 @@ public class Order {
                 .orderId(this.id)
                 .orderDate(this.orderDate)
                 .orderStatus(this.orderStatus)
+                .member(this.member.toResponse())
+                .orderItems(this.orderItems.stream().map(orderItem -> orderItem.toResponse()).collect(Collectors.toList()))
                 .build();
     }
 

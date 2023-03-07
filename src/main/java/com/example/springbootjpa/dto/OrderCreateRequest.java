@@ -17,6 +17,9 @@ import java.util.List;
 public class OrderCreateRequest {
 
     Long memberId;
+    Long itemId;
+    Integer count;
+
     List<OrderItemCreateRequest> orderItems ;
 
 //    public Order toEntity(){

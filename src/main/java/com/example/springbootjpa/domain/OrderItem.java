@@ -1,6 +1,8 @@
 package com.example.springbootjpa.domain;
 
 import com.example.springbootjpa.domain.item.Item;
+import com.example.springbootjpa.dto.OrderItemResponse;
+import com.example.springbootjpa.dto.OrderResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -53,5 +55,14 @@ public class OrderItem {
         return this.count * this.orderPrice;
     }
 
+
+    public OrderItemResponse toResponse(){
+        return OrderItemResponse.builder()
+                .orderItemId(this.id)
+                .orderPrice(this.orderPrice)
+                .count(this.count)
+                .item(this.item.toResponse())
+                .build();
+    }
 
 }
