@@ -1,6 +1,6 @@
 package com.example.springbootjpa.dto;
 
-import com.example.springbootjpa.domain.item.Item;
+import com.example.springbootjpa.domain.item.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,18 +10,19 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemCreateRequest {
+public class BookUpdateRequest extends ItemCreateRequest {
 
-    Long id;
-    String name;
-    Integer price;
-    Integer stockQuantity;
+    String author;
+    String isbn;
 
-    public Item toEntity() {
-        return Item.builder()
+    public Book toEntity() {
+        return Book.builder()
+                .id(this.id)
                 .name(this.name)
                 .price(this.price)
                 .stockQuantity(this.stockQuantity)
+                .author(this.author)
+                .isbn(this.isbn)
                 .build();
     }
 

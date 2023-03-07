@@ -6,11 +6,9 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-public class ItemResponse {
+public class BookResponse extends ItemResponse {
 
-    Long id;
-    String name;
-    Integer price;
-    Integer stockQuantity;
+    String author;
+    String isbn;
 
 }

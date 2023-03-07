@@ -1,6 +1,7 @@
 package com.example.springbootjpa.controller;
 
 import com.example.springbootjpa.dto.MemberCreateRequest;
+import com.example.springbootjpa.dto.MemberQueryParam;
 import com.example.springbootjpa.dto.MemberResponse;
 import com.example.springbootjpa.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RequestMapping(value = "members")
@@ -29,6 +31,14 @@ public class MemberController {
         model.addAttribute("memberCreateRequest", new MemberCreateRequest());
         return "members/createMemberForm";
     }
+
+    @GetMapping( value = "")
+    public String list(Model model) {
+        List<MemberResponse> members = memberService.search(MemberQueryParam.builder().build());
+        model.addAttribute("members", members);
+        return "members/memberList";
+    }
+
 
     @PostMapping( value = "/new")
     public String create(

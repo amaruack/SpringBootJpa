@@ -1,11 +1,10 @@
 package com.example.springbootjpa.service;
 
 import com.example.springbootjpa.dao.ItemRepository;
-import com.example.springbootjpa.dao.MemberRepository;
-import com.example.springbootjpa.domain.Member;
-import com.example.springbootjpa.domain.item.Book;
 import com.example.springbootjpa.domain.item.Item;
-import com.example.springbootjpa.dto.*;
+import com.example.springbootjpa.dto.ItemCreateRequest;
+import com.example.springbootjpa.dto.ItemQueryParam;
+import com.example.springbootjpa.dto.ItemResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ItemService {
+public class BookService {
 
     private final ItemRepository repository;
 
@@ -29,12 +28,6 @@ public class ItemService {
 
     public ItemResponse findById(Long id){
         return repository.findById(id).toResponse();
-    }
-
-    @Transactional
-    public ItemResponse update(BookUpdateRequest updateRequest){
-        Book updateEntity = updateRequest.toEntity();
-        return repository.update(updateEntity).toResponse();
     }
 
     public List<ItemResponse> search(ItemQueryParam queryParam){
