@@ -5,6 +5,7 @@ import com.example.springbootjpa.domain.Member;
 import com.example.springbootjpa.dto.MemberCreateRequest;
 import com.example.springbootjpa.dto.MemberQueryParam;
 import com.example.springbootjpa.dto.MemberResponse;
+import com.example.springbootjpa.dto.MemberUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,14 @@ public class MemberService {
         return saveEntity.toResponse();
     }
 
+    // 회원 수정
+    public MemberResponse update(MemberUpdateRequest updateRequest) {
+        Member entity = updateRequest.toEntity();
+//        validateDuplicateMember(entity);
+        Member updateEntity = repository.update(entity);
+        return updateEntity.toResponse();
+    }
+
     private void validateDuplicateMember(Member entity) {
         List<Member> search = repository.search(MemberQueryParam.builder().name(entity.getName()).build());
         if (!search.isEmpty()) {
@@ -34,7 +43,7 @@ public class MemberService {
         }
     }
 
-    public MemberResponse findById(Long id){
+    public MemberResponse retrieve(Long id){
         return repository.findById(id).toResponse();
     }
 

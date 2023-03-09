@@ -3,7 +3,6 @@ package com.example.springbootjpa.service;
 import com.example.springbootjpa.dao.ItemRepository;
 import com.example.springbootjpa.dao.MemberRepository;
 import com.example.springbootjpa.dao.OrderRepository;
-import com.example.springbootjpa.dao.OrderRepository;
 import com.example.springbootjpa.domain.*;
 import com.example.springbootjpa.domain.Order;
 import com.example.springbootjpa.domain.item.Item;
@@ -40,14 +39,35 @@ public class OrderService {
         // 아이템 조회
         Item item = itemRepository.findById(createRequest.getItemId());
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), createRequest.getCount());
-        // order item 생성
-//        List<OrderItem> orderItems = createRequest.getOrderItems().stream().map(orderItemCreateRequest -> {
-//
-//            return OrderItem.createOrderItem(item, orderItemCreateRequest.getOrderPrice(), orderItemCreateRequest.getCount());
-//        }).collect(Collectors.toList());
 
         // 주문 생성
         Order entity = Order.createOrder(member, delivery, orderItem);
+
+        // 주문 저장
+        Order saveEntity = repository.save(entity);
+
+        return saveEntity.toResponse();
+    }
+
+    @Transactional
+    public OrderResponse saveList(OrderCreateRequestByItemList createRequest) {
+
+        // 맴버 조회
+        Member member = memberRepository.findById(createRequest.getMemberId());
+
+        // 배송 생성
+        Delivery delivery = Delivery.builder()
+                .address(member.getAddress())
+                .build();
+
+        // order item 생성
+        List<OrderItem> orderItems = createRequest.getOrderItems().stream().map(orderItemCreateRequest -> {
+            Item item = itemRepository.findById(orderItemCreateRequest.getItemId());
+            return OrderItem.createOrderItem(item, orderItemCreateRequest.getOrderPrice(), orderItemCreateRequest.getCount());
+        }).collect(Collectors.toList());
+
+        // 주문 생성
+        Order entity = Order.createOrder(member, delivery, orderItems);
 
         // 주문 저장
         Order saveEntity = repository.save(entity);

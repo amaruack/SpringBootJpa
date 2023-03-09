@@ -7,11 +7,9 @@ import java.util.List;
 
 @Data
 @Builder
-public class OrderCreateRequest {
+public class OrderCreateRequestByItemList {
 
     Long memberId;
-    Long itemId;
-    Integer count;
 
     List<OrderItemCreateRequest> orderItems ;
 

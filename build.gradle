@@ -34,7 +34,17 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-
+//        <!-- QueryDSL 추가 -->
+//        <dependency>
+//        <groupId>com.querydsl</groupId>
+//			<artifactId>querydsl-jpa</artifactId>
+//<version>${querydsl.version}</version>
+//		</dependency>
+//        <dependency>
+//        <groupId>com.querydsl</groupId>
+//			<artifactId>querydsl-apt</artifactId>
+//<version>${querydsl.version}</version>
+//		</dependency>
 tasks.named('test') {
     useJUnitPlatform()
 }

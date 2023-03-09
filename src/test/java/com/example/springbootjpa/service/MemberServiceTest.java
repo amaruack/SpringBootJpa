@@ -28,7 +28,7 @@ class MemberServiceTest {
         MemberResponse save = memberService.save(createRequest);
 
         //then
-        MemberResponse findMember = memberService.findById(save.getId());
+        MemberResponse findMember = memberService.retrieve(save.getId());
 
         assertEquals(save.getId(), findMember.getId());
         assertEquals(save.getName(), findMember.getName());

@@ -2,6 +2,7 @@ package com.example.springbootjpa.dao;
 
 import com.example.springbootjpa.domain.Member;
 import com.example.springbootjpa.dto.MemberQueryParam;
+import com.google.common.base.Strings;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,15 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Optional;
 
+@Transactional
 @Repository
 public class MemberRepository /*extends CrudRepository<Member, Long>*/ {
 
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional
     public Member save(Member member) {
         em.persist(member);
         return member;
@@ -26,6 +26,17 @@ public class MemberRepository /*extends CrudRepository<Member, Long>*/ {
 
     public Member findById(Long id) {
         return em.find(Member.class, id);
+    }
+
+    public Member update(Member update) {
+
+        Member find = em.find(Member.class, update.getId());
+
+        if(!Strings.isNullOrEmpty(update.getName())) {
+            find.setName(update.getName());
+        }
+
+        return find;
     }
 
     public List<Member> search(MemberQueryParam queryParam) {

@@ -1,4 +1,4 @@
-package com.example.springbootjpa.controller;
+package com.example.springbootjpa.controller.template;
 
 import com.example.springbootjpa.dto.MemberCreateRequest;
 import com.example.springbootjpa.dto.MemberQueryParam;
