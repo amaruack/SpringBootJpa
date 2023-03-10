@@ -22,6 +22,7 @@ spring:
         show-sql: true
         format_sql: true
         open-in-view: false
+        default_batch_fetch_size: 100
     hibernate:
       ddl-auto: create
 

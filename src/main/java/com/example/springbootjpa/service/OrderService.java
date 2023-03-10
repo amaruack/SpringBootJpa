@@ -92,5 +92,10 @@ public class OrderService {
         return repository.search(queryParam, pageable).stream().map(Order::toResponse).collect(Collectors.toList());
     }
 
+    // 검색
+    public List<OrderQuery> searchOrderQuery(OrderQueryParam queryParam, Pageable pageable){
+        return repository.searchOrderQuery(queryParam, pageable);
+    }
+
 
 }

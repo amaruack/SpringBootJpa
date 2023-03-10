@@ -106,7 +106,8 @@ public class Order {
                 .orderDate(this.orderDate)
                 .orderStatus(this.orderStatus)
                 .member(this.member.toResponse())
-                .orderItems(this.orderItems.stream().map(orderItem -> orderItem.toResponse()).collect(Collectors.toList()))
+                .delivery(this.delivery.toResponse())
+//                .orderItems(this.orderItems.stream().map(orderItem -> orderItem.toResponse()).collect(Collectors.toList()))
                 .build();
     }
 

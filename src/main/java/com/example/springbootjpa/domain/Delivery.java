@@ -2,9 +2,12 @@ package com.example.springbootjpa.domain;
 
 import com.example.springbootjpa.config.DeliveryStatus;
 import com.example.springbootjpa.domain.valuetype.Address;
+import com.example.springbootjpa.dto.DeliveryResponse;
+import com.example.springbootjpa.dto.OrderResponse;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -28,4 +31,11 @@ public class Delivery {
     @OneToOne(mappedBy = "delivery")
     Order order;
 
+    public DeliveryResponse toResponse(){
+        return DeliveryResponse.builder()
+                .deliveryId(this.id)
+                .address(this.address)
+                .status(this.status)
+                .build();
+    }
 }

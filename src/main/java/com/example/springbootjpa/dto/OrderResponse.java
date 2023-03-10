@@ -1,8 +1,6 @@
 package com.example.springbootjpa.dto;
 
 import com.example.springbootjpa.config.OrderStatus;
-import com.example.springbootjpa.domain.Delivery;
-import com.example.springbootjpa.domain.OrderItem;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,7 +16,7 @@ public class OrderResponse {
     OrderStatus orderStatus;
 
     MemberResponse member;
-    Delivery delivery;
+    DeliveryResponse delivery;
     List<OrderItemResponse> orderItems ;
 
 
