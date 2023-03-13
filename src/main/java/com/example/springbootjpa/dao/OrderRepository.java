@@ -5,6 +5,7 @@ import com.example.springbootjpa.domain.Member;
 import com.example.springbootjpa.domain.Order;
 import com.example.springbootjpa.domain.valuetype.Address;
 import com.example.springbootjpa.dto.*;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +34,10 @@ public class OrderRepository /*extends CrudRepository<Member, Long>*/ {
 
     public List<Order> search(OrderQueryParam queryParam, Pageable pageable) {
 
-        String query = "select o from Order o join fetch o.member m "
+        String query = "select distinct o from Order o "
+                + " join fetch o.member m "
                 + " join fetch o.delivery d "
+                + " join o.orderItems oi "
                 + " where 1=1 ";
 
         if (queryParam.getName() != null) {
@@ -63,9 +66,16 @@ public class OrderRepository /*extends CrudRepository<Member, Long>*/ {
             typedQuery.setParameter("userName", queryParam.getUserName());
         }
 
-        return typedQuery.getResultList();
+        System.out.println(pageable.getOffset());
+        System.out.println(pageable.getPageSize());
+        return typedQuery
+                .setFirstResult((int)pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList()
+                ;
     }
 
+    // TODO 잘 사용하지 않을듯
     public List<OrderQuery> searchOrderQuery(OrderQueryParam queryParam, Pageable pageable) {
 
         String query = "select new com.example.springbootjpa.dto.OrderQuery(o.id, o.orderDate, o.orderStatus, m.name, d.address) from Order o "

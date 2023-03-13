@@ -92,7 +92,7 @@ public class OrderService {
         return repository.search(queryParam, pageable).stream().map(Order::toResponse).collect(Collectors.toList());
     }
 
-    // 검색
+    // 검색 // TODO 잘 사용하지 않을듯
     public List<OrderQuery> searchOrderQuery(OrderQueryParam queryParam, Pageable pageable){
         return repository.searchOrderQuery(queryParam, pageable);
     }
