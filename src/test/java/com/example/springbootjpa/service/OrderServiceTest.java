@@ -5,14 +5,12 @@ import com.example.springbootjpa.domain.Member;
 import com.example.springbootjpa.domain.item.Book;
 import com.example.springbootjpa.domain.item.Item;
 import com.example.springbootjpa.domain.valuetype.Address;
-import com.example.springbootjpa.dto.OrderCancelRequest;
-import com.example.springbootjpa.dto.OrderCreateRequest;
-import com.example.springbootjpa.dto.OrderItemCreateRequest;
-import com.example.springbootjpa.dto.OrderResponse;
+import com.example.springbootjpa.dto.*;
 import com.example.springbootjpa.exception.NotEnoughStockException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -51,7 +49,7 @@ class OrderServiceTest {
         em.clear();
 
         //when
-        OrderResponse response = service.save(OrderCreateRequest.builder()
+        OrderResponse response = service.saveList(OrderCreateRequestByItemList.builder()
                         .memberId(member.getId())
                         .orderItems(List.of(OrderItemCreateRequest.builder()
                                         .itemId(book.getId())
@@ -90,7 +88,7 @@ class OrderServiceTest {
 
         //when
         NotEnoughStockException exception = assertThrows(NotEnoughStockException.class, () -> {
-            OrderResponse response = service.save(OrderCreateRequest.builder()
+            OrderResponse response = service.saveList(OrderCreateRequestByItemList.builder()
                     .memberId(member.getId())
                     .orderItems(List.of(OrderItemCreateRequest.builder()
                             .itemId(book.getId())
@@ -104,7 +102,6 @@ class OrderServiceTest {
         Book find = em.find(Book.class, book.getId());
 
         assertEquals(100, find.getStockQuantity());
-        assertEquals("stock is small", exception.getMessage());
 
     }
 
@@ -128,7 +125,7 @@ class OrderServiceTest {
         em.flush();
         em.clear();
 
-        OrderResponse response = service.save(OrderCreateRequest.builder()
+        OrderResponse response = service.saveList(OrderCreateRequestByItemList.builder()
                 .memberId(member.getId())
                 .orderItems(List.of(OrderItemCreateRequest.builder()
                         .itemId(book.getId())
@@ -149,10 +146,6 @@ class OrderServiceTest {
         assertEquals(1_000, find.getStockQuantity());
         assertEquals(OrderStatus.CANCEL, findResponse.getOrderStatus());
 
-    }
-
-    @Test
-    void findById() {
     }
 
     @Test

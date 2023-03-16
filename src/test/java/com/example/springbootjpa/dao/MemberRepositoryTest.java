@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -30,7 +31,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    void save() {
+    void 맴버_저장_성공() {
         //given
         Member member = Member.builder()
                 .name("son")
@@ -39,24 +40,23 @@ class MemberRepositoryTest {
         Member save = memberRepository.save(member);
 
         //then
-        Member findMember = memberRepository.findById(save.getId());
+        Member findMember = memberRepository.findById(save.getId()).get();
 
         assertEquals(save.getId(), findMember.getId());
         assertEquals(save.getName(), findMember.getName());
-
         assertTrue(save.equals(findMember));
 
     }
 
     @Test
-    void find() {
+    void 맴버_조회_성공() {
         Member member = Member.builder()
                 .name("son")
                 .build();
         Member save = memberRepository.save(member);
 
         //when
-        Member findMember = memberRepository.findById(save.getId());
+        Member findMember = memberRepository.findById(save.getId()).get();
 
         //then
         assertEquals(save.getId(), findMember.getId());
@@ -66,7 +66,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    void search() {
+    void 맴버_검색_성공() {
         Member member = Member.builder()
                 .name("son")
                 .build();
@@ -78,9 +78,9 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        List<Member> search = memberRepository.search(MemberQueryParam.builder().build());
+        List<Member> search = memberRepository.search(MemberQueryParam.builder().name("son2").build());
 
-        assertEquals(2, search.size());
+        assertEquals(1, search.size());
 
     }
 

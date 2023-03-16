@@ -18,7 +18,7 @@ class MemberServiceTest {
     MemberService memberService;
 
     @Test
-    void 회원가입() {
+    void 회원_가입_성공() {
 
         //given
         MemberCreateRequest createRequest = MemberCreateRequest.builder()

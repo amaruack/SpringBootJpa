@@ -28,7 +28,7 @@ public class ItemService {
     }
 
     public ItemResponse findById(Long id){
-        return repository.findById(id).toResponse();
+        return repository.findById(id).get().toResponse();
     }
 
     @Transactional

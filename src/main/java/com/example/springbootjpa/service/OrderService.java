@@ -7,6 +7,7 @@ import com.example.springbootjpa.domain.*;
 import com.example.springbootjpa.domain.Order;
 import com.example.springbootjpa.domain.item.Item;
 import com.example.springbootjpa.dto.*;
+import com.example.springbootjpa.dto.query.OrderQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class OrderService {
     public OrderResponse save(OrderCreateRequest createRequest) {
 
         // 맴버 조회
-        Member member = memberRepository.findById(createRequest.getMemberId());
+        Member member = memberRepository.findById(createRequest.getMemberId()).get();
 
         // 배송 생성
         Delivery delivery = Delivery.builder()
@@ -37,7 +38,7 @@ public class OrderService {
                 .build();
 
         // 아이템 조회
-        Item item = itemRepository.findById(createRequest.getItemId());
+        Item item = itemRepository.findById(createRequest.getItemId()).get();
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), createRequest.getCount());
 
         // 주문 생성
@@ -53,7 +54,7 @@ public class OrderService {
     public OrderResponse saveList(OrderCreateRequestByItemList createRequest) {
 
         // 맴버 조회
-        Member member = memberRepository.findById(createRequest.getMemberId());
+        Member member = memberRepository.findById(createRequest.getMemberId()).get();
 
         // 배송 생성
         Delivery delivery = Delivery.builder()
@@ -62,7 +63,7 @@ public class OrderService {
 
         // order item 생성
         List<OrderItem> orderItems = createRequest.getOrderItems().stream().map(orderItemCreateRequest -> {
-            Item item = itemRepository.findById(orderItemCreateRequest.getItemId());
+            Item item = itemRepository.findById(orderItemCreateRequest.getItemId()).get();
             return OrderItem.createOrderItem(item, orderItemCreateRequest.getOrderPrice(), orderItemCreateRequest.getCount());
         }).collect(Collectors.toList());
 
@@ -78,13 +79,13 @@ public class OrderService {
     // 취소
     @Transactional
     public void cancel(OrderCancelRequest cancelRequest){
-        Order order = repository.findById(cancelRequest.getOrderId());
+        Order order = repository.findById(cancelRequest.getOrderId()).get();
         order.cancel();
     }
 
     // 조회
     public OrderResponse findById(Long id){
-        return repository.findById(id).toResponse();
+        return repository.findById(id).get().toResponse();
     }
 
     // 검색

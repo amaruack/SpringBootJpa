@@ -1,4 +1,4 @@
-package com.example.springbootjpa.dto;
+package com.example.springbootjpa.dto.query;
 
 import com.example.springbootjpa.config.OrderStatus;
 import com.example.springbootjpa.domain.valuetype.Address;

@@ -27,7 +27,7 @@ public class BookService {
     }
 
     public ItemResponse findById(Long id){
-        return repository.findById(id).toResponse();
+        return repository.findById(id).get().toResponse();
     }
 
     public List<ItemResponse> search(ItemQueryParam queryParam){

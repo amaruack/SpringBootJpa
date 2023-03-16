@@ -1,6 +1,7 @@
 package com.example.springbootjpa.controller.api;
 
 import com.example.springbootjpa.dto.*;
+import com.example.springbootjpa.dto.query.OrderQuery;
 import com.example.springbootjpa.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

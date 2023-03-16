@@ -44,7 +44,7 @@ public class MemberService {
     }
 
     public MemberResponse retrieve(Long id){
-        return repository.findById(id).toResponse();
+        return repository.findById(id).get().toResponse();
     }
 
     // 회원 전체 조회
