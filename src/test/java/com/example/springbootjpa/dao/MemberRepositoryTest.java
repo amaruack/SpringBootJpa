@@ -1,6 +1,7 @@
 package com.example.springbootjpa.dao;
 
 import com.example.springbootjpa.domain.Member;
+import com.example.springbootjpa.domain.MemberNameOnly;
 import com.example.springbootjpa.dto.MemberQueryParam;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,7 +84,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        List<Member> search = memberRepository.search(MemberQueryParam.builder().name("son2").build());
+        List<Member> search = memberRepository.search(MemberQueryParam.builder().name("son2").build(), PageRequest.of(0,10));
 
         assertEquals(1, search.size());
 
@@ -109,5 +110,27 @@ class MemberRepositoryTest {
         System.out.println("sdf");
 
     }
+
+    @Test
+    void 맴버_프로젝션_테스트_1() {
+
+        memberRepository.save(Member.builder().name("son1").build());
+        memberRepository.save(Member.builder().name("son2").build());
+        memberRepository.save(Member.builder().name("son3").build());
+        memberRepository.save(Member.builder().name("son4").build());
+        memberRepository.save(Member.builder().name("son5").build());
+        memberRepository.save(Member.builder().name("son6").build());
+
+        //when
+        List<MemberNameOnly> userNames = memberRepository.findProjectionByName("son1");
+
+        userNames.stream().forEach(memberNameOnly -> {
+            System.out.println(memberNameOnly.getName());
+        });
+
+
+    }
+
+
 
 }

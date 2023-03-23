@@ -28,7 +28,7 @@ public class OrderController {
     @GetMapping( value = "order")
     public String orderForm(Model model) {
 
-        List<MemberResponse> members = memberService.search(MemberQueryParam.builder().build());
+        List<MemberResponse> members = memberService.search(MemberQueryParam.builder().build(), PageRequest.of(0,10));
         List<ItemResponse> items = itemService.search(ItemQueryParam.builder().build());
 
         model.addAttribute("members", members);

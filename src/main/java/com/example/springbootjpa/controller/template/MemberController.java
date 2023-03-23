@@ -6,6 +6,7 @@ import com.example.springbootjpa.dto.MemberResponse;
 import com.example.springbootjpa.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,7 @@ public class MemberController {
 
     @GetMapping( value = "")
     public String list(Model model) {
-        List<MemberResponse> members = memberService.search(MemberQueryParam.builder().build());
+        List<MemberResponse> members = memberService.search(MemberQueryParam.builder().build(), PageRequest.of(0, 10));
         model.addAttribute("members", members);
         return "members/memberList";
     }

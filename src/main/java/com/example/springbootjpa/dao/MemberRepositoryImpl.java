@@ -3,6 +3,7 @@ package com.example.springbootjpa.dao;
 import com.example.springbootjpa.domain.Member;
 import com.example.springbootjpa.dto.MemberQueryParam;
 import com.google.common.base.Strings;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,7 @@ public class MemberRepositoryImpl /*extends CrudRepository<Member, Long>*/ {
         return find;
     }
 
-    public List<Member> search(MemberQueryParam queryParam) {
+    public List<Member> search(MemberQueryParam queryParam, Pageable pageable) {
         String query = "select m from Member m "
                 + " where 1=1 ";
         if (queryParam.getName() != null) {
@@ -39,6 +40,11 @@ public class MemberRepositoryImpl /*extends CrudRepository<Member, Long>*/ {
         if (queryParam.getName() != null) {
             typedQuery.setParameter("name", queryParam.getName());
         }
+
+//        typedQuery.setFirstResult();
+//        typedQuery.setMaxResults();
+
+
 
         return typedQuery.getResultList();
     }

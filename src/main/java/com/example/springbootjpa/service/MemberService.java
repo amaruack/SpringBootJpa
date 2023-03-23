@@ -7,6 +7,8 @@ import com.example.springbootjpa.dto.MemberQueryParam;
 import com.example.springbootjpa.dto.MemberResponse;
 import com.example.springbootjpa.dto.MemberUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +39,7 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member entity) {
-        List<Member> search = repository.search(MemberQueryParam.builder().name(entity.getName()).build());
+        List<Member> search = repository.search(MemberQueryParam.builder().name(entity.getName()).build(), PageRequest.of(0,10));
         if (!search.isEmpty()) {
             throw new IllegalArgumentException("duplicated name");
         }
@@ -48,8 +50,8 @@ public class MemberService {
     }
 
     // 회원 전체 조회
-    public List<MemberResponse> search(MemberQueryParam queryParam){
-        return repository.search(queryParam).stream().map(Member::toResponse).collect(Collectors.toList());
+    public List<MemberResponse> search(MemberQueryParam queryParam, Pageable pageable){
+        return repository.search(queryParam, pageable).stream().map(Member::toResponse).collect(Collectors.toList());
     }
 
 

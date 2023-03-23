@@ -3,6 +3,7 @@ package com.example.springbootjpa.controller.api;
 import com.example.springbootjpa.dto.*;
 import com.example.springbootjpa.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +18,15 @@ public class MemberApiController {
 
     @GetMapping("")
     public Response search(
-            @RequestParam(name = "name", required = false) String name) {
+            @RequestParam(name = "name", required = false) String name,
+            /*@ParameterObject*/ Pageable pageable
+    ) {
 
         MemberQueryParam queryParam = MemberQueryParam.builder()
                 .name(name)
                 .build();
 
-        List<MemberResponse> response = memberService.search(queryParam);
+        List<MemberResponse> response = memberService.search(queryParam, pageable);
 
         return Response.builder()
                 .responseCode("2000")
