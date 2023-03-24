@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +33,15 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Order> orders ;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
+    Group group;
+
+    public void changeGroup(Group group) {
+        this.group = group;
+        group.getMembers().add(this);
+    }
+
     public MemberResponse toResponse() {
         return MemberResponse.builder()
                 .id(this.id)
@@ -39,4 +49,5 @@ public class Member {
                 .address(this.address)
                 .build();
     }
+
 }

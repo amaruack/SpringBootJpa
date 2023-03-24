@@ -9,7 +9,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
