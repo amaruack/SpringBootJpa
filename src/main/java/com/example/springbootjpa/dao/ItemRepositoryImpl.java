@@ -4,7 +4,9 @@ import com.example.springbootjpa.domain.item.Book;
 import com.example.springbootjpa.domain.item.Item;
 import com.example.springbootjpa.dto.ItemQueryParam;
 import com.google.common.base.Strings;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +19,9 @@ import java.util.List;
 @Transactional
 public class ItemRepositoryImpl {
 
+    private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager em;
+
 
     public Item update(Book updateData) {
         Book findData = (Book) em.find(Item.class, updateData.getId());
