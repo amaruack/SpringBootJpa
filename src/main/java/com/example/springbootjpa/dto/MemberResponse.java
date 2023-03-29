@@ -16,5 +16,11 @@ public class MemberResponse {
 
     private Long id;
     private String name;
+    private Integer age;
     private Address address;
+
+    public MemberResponse(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

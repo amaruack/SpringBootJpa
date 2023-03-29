@@ -26,6 +26,9 @@ public class Member {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "age")
+    private Integer age;
+
     @Embedded
     private Address address;
 

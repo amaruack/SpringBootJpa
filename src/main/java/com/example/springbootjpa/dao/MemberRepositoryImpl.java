@@ -4,7 +4,10 @@ import com.example.springbootjpa.domain.Member;
 import com.example.springbootjpa.domain.QMember;
 import com.example.springbootjpa.dto.MemberQueryParam;
 import com.google.common.base.Strings;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +31,6 @@ public class MemberRepositoryImpl /*extends CrudRepository<Member, Long>*/ {
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager em;
 
-
     public Member update(Member update) {
 
         Member find = em.find(Member.class, update.getId());
@@ -49,6 +51,16 @@ public class MemberRepositoryImpl /*extends CrudRepository<Member, Long>*/ {
                 .limit(pageable.getPageSize())
                 .fetch();
         return search;
+    }
+
+
+    protected <T> OrderSpecifier[] orderCondition(Class<T> clazz, String variable, Pageable pageable) {
+        PathBuilder<T> entityPath = new PathBuilder<>(clazz, variable);
+        OrderSpecifier[] tmp = pageable.getSort()
+                .stream()
+                .map(order -> new OrderSpecifier(Order.valueOf(order.getDirection().name()), entityPath.get(order.getProperty())))
+                .toArray(OrderSpecifier[]::new);
+        return tmp ;
     }
 
     public BooleanExpression[] createWhere(MemberQueryParam queryParam){
