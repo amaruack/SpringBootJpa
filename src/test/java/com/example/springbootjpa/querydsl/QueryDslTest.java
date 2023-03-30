@@ -5,8 +5,12 @@ import com.example.springbootjpa.domain.Member;
 import com.example.springbootjpa.domain.QGroup;
 import com.example.springbootjpa.domain.QMember;
 import com.example.springbootjpa.dto.MemberResponse;
+import com.example.springbootjpa.dto.QMemberResponse;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -22,6 +26,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static com.example.springbootjpa.domain.QGroup.group;
 import static com.example.springbootjpa.domain.QMember.member;
@@ -312,5 +318,94 @@ public class QueryDslTest {
         }
 
     }
+
+    @Test
+    void 쿼리_프로젝션_테스트_dto_constructor(){
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        // setter 로 설정
+        List<MemberResponse> result =
+                query.select(new QMemberResponse(member.id, member.name))
+                        .from(member)
+                        .fetch();
+
+        for (MemberResponse tuple : result) {
+            System.out.println(tuple.toString());
+        }
+
+    }
+
+    @Test
+    void 동적쿼리_BooleanBuilder(){
+        String username = "member1";
+        Integer age = 10;
+
+        List<Member> search = searchMember1(username, age);
+        assertThat(search.size()).isEqualTo(1);
+
+    }
+
+    private List<Member> searchMember1(String username, Integer age) {
+        JPAQueryFactory query = new JPAQueryFactory(em);
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        if (username != null) {
+            booleanBuilder.and(member.name.eq(username));
+        }
+        if (age != null) {
+            booleanBuilder.or(member.age.eq(age));
+        }
+
+        return query.select(member)
+                .from(member)
+                .where(booleanBuilder)
+                .fetch();
+    }
+
+    @Test
+    void 동적쿼리_where_param(){
+        String username = "member1";
+        Integer age = 10;
+
+        List<Member> search = searchMember2(username, age);
+        assertThat(search.size()).isEqualTo(1);
+
+    }
+
+    private List<Member> searchMember2(String username, Integer age) {
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        return query.select(member)
+                .from(member)
+                .where(
+                        condition(member.name::eq, username),
+                        condition(member.age::eq, age))
+                .fetch();
+    }
+
+    private <T> BooleanExpression condition(Function<T, BooleanExpression> function, T username) {
+        return Optional.ofNullable(username).map(function).orElse(null);
+    }
+
+    @Test
+    void 벌크_연산(){
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        query.update(member)
+                .set(member.name, "none")
+                .where(member.age.lt(60))
+                .execute();
+    }
+
+
+    @Test
+    void method_reference_test(){
+
+        TestMethodReference temp = new TestMethodReference();
+        Function<Integer, String> tmp = temp::aaaa;
+
+        Optional<Integer> testOption = Optional.of(10);
+        System.out.println("!!!!!!");
+        System.out.println(testOption.map(tmp).get());
+
+    }
+
 
 }
